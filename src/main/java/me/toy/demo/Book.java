@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Getter @Setter
 @ToString
 @Builder
-@Document(indexName = "spring-data-test", type = "doc")
+@Document(indexName = "spring-data-test2", type = "doc")
 public class Book {
     @Id
     String id;

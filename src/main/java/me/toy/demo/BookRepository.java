@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("bookRepository")
 public interface BookRepository extends ElasticsearchRepository<Book, String> {
     Page<Book> findByAuthor(String author, Pageable pageable);
 

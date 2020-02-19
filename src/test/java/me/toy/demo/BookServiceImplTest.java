@@ -1,9 +1,12 @@
 package me.toy.demo;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -14,8 +17,19 @@ import static org.junit.Assert.assertNotNull;
 public class BookServiceImplTest {
 
     @Autowired
-    BookService bookService;
+    ElasticsearchTemplate elasticsearchTemplate;
 
+
+    BookServiceImpl bookService;
+
+    @Autowired
+    @Qualifier("bookRepository")
+    BookRepository bookRepository;
+
+    @Before
+    public void setup() {
+        bookService = new BookServiceImpl(bookRepository);
+    }
 
     @Test
     public void save() {

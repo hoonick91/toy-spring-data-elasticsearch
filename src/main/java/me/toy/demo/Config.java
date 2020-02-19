@@ -1,47 +1,54 @@
 package me.toy.demo;
 
-import org.elasticsearch.client.RestHighLevelClient;
+import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.core.env.Environment;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
-import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
-import org.springframework.data.elasticsearch.core.ElasticsearchEntityMapper;
-import org.springframework.data.elasticsearch.core.EntityMapper;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
+import java.net.InetAddress;
+@Slf4j
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "me.toy.demo")
-public class Config extends AbstractElasticsearchConfiguration {
+public class Config {
 
     @Value("${elasticsearch.host}")
-    String EsHost;
+    String ES_Host;
 
-    @Value("${elasticsearch.port}")
-    String EsPort;
+    @Value("${elasticsearch.tcp-port}")
+    Integer ES_TCP_Port;
 
-    @Override
-    public RestHighLevelClient elasticsearchClient() {
-        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(EsHost + ":" + EsPort)
-                .build();
+    @Value("${elasticsearch.cluster-name}")
+    private String CLUSTER_NAME;
 
-        return RestClients.create(clientConfiguration).rest();
+
+    @Bean
+    public Client client() throws Exception {
+        log.info(ES_Host);
+        log.info(ES_TCP_Port.toString());
+        log.info(CLUSTER_NAME);
+        Settings settings = Settings.builder()
+                .put("client.transport.sniff", false)
+                .put("cluster.name", CLUSTER_NAME).build();
+
+        TransportClient client = new PreBuiltTransportClient(settings);
+        client.addTransportAddress(new TransportAddress(InetAddress.getByName(ES_Host), ES_TCP_Port));
+        return client;
     }
 
     @Bean
-    @Override
-    public EntityMapper entityMapper() {
-        ElasticsearchEntityMapper entityMapper = new ElasticsearchEntityMapper(elasticsearchMappingContext(),
-                new DefaultConversionService());
-        entityMapper.setConversions(elasticsearchCustomConversions());
-
-        return entityMapper;
+    public ElasticsearchOperations elasticsearchTemplate() throws Exception {
+        return new ElasticsearchTemplate(client());
     }
+
+
 
 
 }
