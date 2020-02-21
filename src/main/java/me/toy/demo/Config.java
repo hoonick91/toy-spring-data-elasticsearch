@@ -35,7 +35,6 @@ public class Config {
         log.info(ES_TCP_Port.toString());
         log.info(CLUSTER_NAME);
         Settings settings = Settings.builder()
-                .put("client.transport.sniff", false)
                 .put("cluster.name", CLUSTER_NAME).build();
 
         TransportClient client = new PreBuiltTransportClient(settings);

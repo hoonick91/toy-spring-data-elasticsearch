@@ -1,5 +1,6 @@
 package me.toy.demo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BookServiceImplTest {
@@ -34,7 +39,7 @@ public class BookServiceImplTest {
     @Test
     public void save() {
         Book book = Book.builder()
-                .id("1001")
+                .id("1002")
                 .title("elsaticsesa")
                 .author("jhoon")
                 .releaseDate("23-FEB-2017")
@@ -56,6 +61,8 @@ public class BookServiceImplTest {
 
     @Test
     public void findAll() {
+        Iterable<Book> books = bookService.findAll();
+        books.iterator().forEachRemaining(iter->log.info(iter.toString()));
     }
 
     @Test

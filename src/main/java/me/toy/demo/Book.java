@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 @ToString
 @Builder
