@@ -7,11 +7,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -62,11 +64,14 @@ public class BookServiceImplTest {
     @Test
     public void findAll() {
         Iterable<Book> books = bookService.findAll();
-        books.iterator().forEachRemaining(iter->log.info(iter.toString()));
+        books.iterator().forEachRemaining(iter -> log.info(iter.toString()));
     }
 
     @Test
     public void findByAuthor() {
+        Page<Book> books = bookService.findByAuthor("jhoon", PageRequest.of(0, 10));
+        List<Book> bookList = books.get().collect(Collectors.toList());
+        log.info(bookList.toString());
     }
 
     @Test

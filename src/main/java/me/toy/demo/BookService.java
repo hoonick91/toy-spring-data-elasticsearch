@@ -17,5 +17,7 @@ public interface BookService {
 
     Page<Book> findByAuthor(String author, PageRequest pageRequest);
 
+    Page<Book> findByAuthorAndTitle(String author, String title, PageRequest pageRequest);
+
     List<Book> findByTitle(String title);
 }

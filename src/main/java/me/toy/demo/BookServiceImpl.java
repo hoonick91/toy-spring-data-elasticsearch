@@ -15,7 +15,13 @@ import java.util.Optional;
 @NoArgsConstructor
 public class BookServiceImpl implements BookService {
 
+
     private BookRepository bookRepository;
+
+    @Override
+    public Page<Book> findByAuthorAndTitle(String author, String title, PageRequest pageRequest) {
+        return bookRepository.findByAuthorAndTitle(author, title, pageRequest);
+    }
 
     @Override
     public Book save(Book book) {
