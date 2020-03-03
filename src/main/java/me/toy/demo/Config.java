@@ -31,9 +31,6 @@ public class Config {
 
     @Bean
     public Client client() throws Exception {
-        log.info(ES_Host);
-        log.info(ES_TCP_Port.toString());
-        log.info(CLUSTER_NAME);
         Settings settings = Settings.builder()
                 .put("cluster.name", CLUSTER_NAME).build();
 

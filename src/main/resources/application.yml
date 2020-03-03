@@ -1,4 +1,4 @@
 elasticsearch:
-  host: localhost
-  cluster-name: docker-cluster
-  tcp-port: 9300
+  host: 121.156.46.168
+  cluster-name: my-es
+  tcp-port: 30931
